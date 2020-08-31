@@ -1,61 +1,137 @@
-import React, { useState } from 'react';
-
+import React from 'react';
+import styled from 'styled-components'
 import { addSmurf } from '../actions/addSmurf';
 import { connect } from 'react-redux';
 
-const SmurfForm = props => {
-    const [smurf, setSmurf] = useState({ name:'', age:'', height:''});
+import Smurfette from '../images/smurfette.jpeg'
 
-     const changeHandler = e => { 
-        setSmurf({ ...smurf, [e.target.name] : e.target.value })
-    };
+class AddSmurfForm extends React.Component {
+    constructor(props)  {
+        super(props);
+        this.state = {
+            name: '',
+            age: '',
+            height: ''
+        }
+    }
 
-    const submitHandler = e => { 
+    changeHandler = e => {
+        this.setState({ [e.target.name] : e.target.value })
+    }
+
+    submitHandler = e => {
         e.preventDefault();
-        props.addSmurf(smurf);
-        setSmurf({ name: '', age: '', height: ''});
-    };
+        this.props.addSmurf({
+            id: Date.now(),
+            name: this.state.name,
+            age: this.state.age, 
+            height: this.state.height
+        })
+        this.setState({ name: '', age: '', height: '' })
+    }
 
-    return (
-        
-    <div className= 'smurf-form'>
-        <h2>Create a New Smurf</h2>
+    render() {
 
-        <form onSubmit={submitHandler}>
-            <label>
-                Name: 
-                <input
-                    type = 'text'
-                    name = 'name'
-                    value = {smurf.name}
-                    onChange = {changeHandler}
-                    placeholder = 'Name of Smurf'
+        return (
+         <div className="smurf-form">
+             <div> 
+                <Image src= { Smurfette }/>
+             </div>
+            <Heading>Create A Smurf</Heading>
+
+            <Form onSubmit={this.submitHandler}>
+                <label>
+                    Name
+                    <input 
+                        type="text"
+                        name="name"
+                        value={this.state.name}
+                        onChange={this.changeHandler}
+                        placeholder="Enter a Name"
                     />
                 </label>
                 <label>
-                Age: 
-                <input
-                    type = 'text'
-                    name = 'age'
-                    value = {smurf.age}
-                    onChange = {changeHandler}
-                    placeholder = 'Age of Smurf'
+                    Age 
+                    <input 
+                        type="text"
+                        name="age"
+                        value={this.state.age}
+                        onChange={this.changeHandler}
+                        placeholder="Enter an Age"
                     />
                 </label>
                 <label>
-                Height: 
-                <input
-                    type = 'text'
-                    name = 'height'
-                    value = {smurf.height}
-                    onChange = {changeHandler}
-                    placeholder = 'Height of Smurf in cm'
-                />
+                    Height 
+                    <input 
+                        type="text"
+                        name="height"
+                        value={this.state.height}
+                        onChange={this.changeHandler}
+                        placeholder="Enter a Height in cm"
+                    />
                 </label>
-            <button on-click={submitHandler}>Add Smurf</button>
-            </form>
-        </div>
-        );
-};
+            <ButtonDiv>
+                    <button type="submit">Create Villager</button>
+            </ButtonDiv>
+            </Form>
+         </div>
+        )
+    }
+}
 
-export default connect(null, { addSmurf })(SmurfForm)
+const mapStateToProps = state => {
+    return {
+        state
+    }
+}
+
+export default connect(mapStateToProps, { addSmurf })(AddSmurfForm)
+
+const Image = styled.img `
+    margin-top: 0;
+    height: 30rem;
+    border: .5rem solid black;
+    border-radius: 1rem;
+    float: right;
+    margin: 3vw;
+`
+const Form = styled.form `
+    display: flex;
+    flex-direction: column;
+
+    label {
+        font-size: 1.2rem;
+        font-family: Londrina Solid;
+        font-weight: bolder;
+    }
+
+    input {
+        margin: 1rem;
+        font-size: 1.2rem;
+        border: .1rem solid black;
+    }
+`
+
+const Heading = styled.h2 `
+    font-size: 2rem;
+    font-family: Londrina Solid;
+    font-weight: bolder;
+`
+const ButtonDiv = styled.div `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    button {
+        padding: .8rem;
+        border: .3rem solid black;
+        border-radius: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 15rem;
+        font-size: 1.5rem;
+        font-family: Londrina Solid;
+        font-weight: bolder;
+        background-color: blue;
+        color: white;
+    }
+`

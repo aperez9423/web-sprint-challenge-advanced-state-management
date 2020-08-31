@@ -1,39 +1,39 @@
+import { ADD_SMURF } from '../actions/addSmurf';
 import { FETCHING_SMURF_START, FETCHING_SMURF_SUCCESS } from '../actions/getSmurf';
-import { ADD_SMURF } from '../actions/addSmurf'; 
 
 const initialState = {
     smurfs: [
-        {
-            name: 'Brainey',
+          {
+            name: "Brainey",
             age: 200,
-            height: '5cm',
+            height: "5",
             id: 0
-        }
+          }
     ],
     isFetching: false,
     error: ''
-};
+}
 
-export const smurfReducer = ( state = initialState, action ) => {
+export const smurfReducer = (state = initialState, action) => {
     switch(action.type) {
-        case FETCHING_SMURF_START:
+        case FETCHING_SMURF_START :
             return {
                 ...state,
                 isFetching: true,
                 error: ''
             }
-        case FETCHING_SMURF_SUCCESS:
-            return{
+        case FETCHING_SMURF_SUCCESS : 
+            return {
                 ...state,
                 smurfs: action.payload,
                 isFetching: false
             }
-        case ADD_SMURF:
+        case ADD_SMURF :
             return {
-                ...state, 
+                ...state,
                 smurfs: [...state.smurfs, action.payload]
             }
-        default: 
+        default:
             return state;
     }
 }
